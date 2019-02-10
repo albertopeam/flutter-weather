@@ -23,6 +23,9 @@ dependencies:
   # Networking
   http: ^0.12.0+1
 
+  # Location
+  location: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

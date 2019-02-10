@@ -11,8 +11,8 @@ class OpenWeatherService implements WeatherService{
 
   OpenWeatherService(this._client, this._endpoint, this._appId);
   
-  Future<Weather> get() async {
-    final url = _endpoint + "weather?lat=43.333032&lon=-8.369806&appId=${_appId}";    
+  Future<Weather> get(double lat, double lon) async {
+    final url = _endpoint + "weather?lat=${lat}&lon=${lon}&appId=${_appId}";    
     final response = await _client.get(url);
     if (response.statusCode == 200) {
       return _map(json.decode(response.body));
