@@ -26,25 +26,18 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
 
   @override
-  Widget build(BuildContext context) {
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+  Widget build(BuildContext context) {    
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: FutureBuilder<Weather>(
             future: widget.weatherUseCase.get(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Weather weather = snapshot.data;
-                return Text(weather.name);
+                return _drawWeather(weather);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -54,4 +47,211 @@ class _WeatherPageState extends State<WeatherPage> {
       )
     );
   }
+
+  Container _drawWeather(Weather weather) {
+    Row city = Row(mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Column(children: <Widget>[
+                      Text(
+                        weather.name,
+                        style: TextStyle(
+                          fontSize: 34,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ]),
+                  ],
+                );
+    Row date = Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                SizedBox(height: 9),
+                //DATE TEXT
+                Text(weather.dateTime.toIso8601String(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black87,
+                    )),
+              ],
+            ),
+          ],
+        );
+    Row temperature = Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            SizedBox(height: 68),
+                            
+                            //TEMPRATURE TEXT
+                            Text(weather.temperature.toString() + "C",
+                                style: TextStyle(
+                                  fontSize: 72,
+                                  color: Colors.black87,
+                                ))
+                          ],
+                        ),
+                      ],
+                    );
+
+    //WEATHER LAYOUT https://medium.com/@zfinix/weather-app-building-layouts-in-flutter-e287c8bd0393  
+    //https://flutter.io/docs/development/ui/assets-and-images
+    final icon = Hero(
+      tag: 'hero',
+      child: Image.asset('assets/${weather.icon}.png', scale: 0.9),
+    );
+    Row description = Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        SizedBox(width: 10),
+                        icon,
+                        SizedBox(width: 9),
+                        Text(weather.description,
+                            style: TextStyle(
+                              fontSize: 19,
+                              color: Colors.black87,
+                            )),
+                      ],
+                    );
+    final wind = LinearProgressIndicator(
+      backgroundColor: Colors.white24,
+      value: weather.windSpeed,
+    );
+    final pressurec = LinearProgressIndicator(
+      backgroundColor: Colors.white24,
+      value: weather.pressure,
+    );
+    final humidityc = LinearProgressIndicator(
+      backgroundColor: Colors.white24,
+      value: weather.humidity,
+    );
+    Row other = Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            SizedBox(height: 20),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  margin: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text("Wind",
+                                          style: TextStyle(
+                                            fontSize: 9,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 12),
+                                      Text(weather.windSpeed.toString(),
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 10),
+                                      Text("km/h",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 7),
+                                      SizedBox(
+                                        height: 2,
+                                        width: 80,
+                                        child: wind,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text("Pressure",
+                                          style: TextStyle(
+                                            fontSize: 9,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 12),
+                                      Text(weather.pressure.toString(),
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 10),
+                                      Text("hPa",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 7),
+                                      SizedBox(
+                                        height: 2,
+                                        width: 80,
+                                        child: pressurec,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text("Humidity",
+                                          style: TextStyle(
+                                            fontSize: 9,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 12),
+                                      Text(weather.humidity.toString(),
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 10),
+                                      Text("%",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black87,
+                                          )),
+                                      SizedBox(height: 7),
+                                      SizedBox(
+                                        height: 2,
+                                        width: 80,
+                                        child: humidityc,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+    Container container = Container(
+              margin: EdgeInsets.all(0),
+              child: Padding(padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: <Widget>[
+                    city,
+                    date ,
+                    temperature,
+                    description,
+                    other              
+                ],
+               ),
+              ),
+            );
+    return container;
+  }
+
 }
