@@ -12,7 +12,7 @@ class OpenWeatherService implements WeatherService{
   OpenWeatherService(this._client, this._endpoint, this._appId);
   
   Future<Weather> get(double lat, double lon) async {
-    final url = _endpoint + "weather?lat=${lat}&lon=${lon}&appId=${_appId}&units=metric";    
+    final url = _endpoint + "weather?lat=$lat&lon=$lon&appId=$_appId&units=metric";    
     final response = await _client.get(url);
     if (response.statusCode == 200) {
       return _map(json.decode(response.body));

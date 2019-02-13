@@ -119,18 +119,20 @@ class _WeatherPageState extends State<WeatherPage> {
                               color: Colors.black87,
                             )),
                       ],
-                    );
+                    );                  
+    double maxWindSpeed = 25.0; 
     final wind = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weather.windSpeed,
+      value: weather.windSpeed / maxWindSpeed,
     );
+    double maxPressure = 1058.0;
     final pressurec = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weather.pressure,
+      value: weather.pressure / maxPressure,
     );
     final humidityc = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weather.humidity,
+      value: weather.humidity / 100.0,
     );
     Row other = Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -157,7 +159,7 @@ class _WeatherPageState extends State<WeatherPage> {
                                             color: Colors.black87,
                                           )),
                                       SizedBox(height: 10),
-                                      Text("km/h",
+                                      Text("m/s",
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.black87,
