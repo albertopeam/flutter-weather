@@ -1,34 +1,40 @@
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
-import 'weather.dart';
+import 'forecast.dart';
 import 'weather_use_case.dart';
 
-class OpenWeatherService implements WeatherService{
+class OpenWeatherForecastService implements ForecastService {
 
   final String _endpoint;
   final Client _client;
   final String _appId;
 
-  OpenWeatherService(this._client, this._endpoint, this._appId);
+  OpenWeatherForecastService(this._client, this._endpoint, this._appId);
   
-  Future<Weather> get(double lat, double lon) async {
-    final url = _endpoint + "weather?lat=$lat&lon=$lon&appId=$_appId&units=metric";    
+  Future<Forecast> get(double lat, double lon) async {
+    final url = _endpoint + "forecast?lat=$lat&lon=$lon&appId=$_appId&units=metric";    
     final response = await _client.get(url);
     if (response.statusCode == 200) {
-      return _map(json.decode(response.body));
+      return _mapForecast(json.decode(response.body));
     } else {
       throw Exception("Request error");
     }
   }
 
-  Weather _map(Map<String, dynamic> json) {
+  Forecast _mapForecast(Map<String, dynamic> json) {
+    final String name =  json['city']['name'];
+    final List<dynamic> cities = json['list'] as List;
+    final List<Prediction> predictions = cities.map((i) => _mapPrediction(i)).toList();
+    return Forecast(name: name, predictions: predictions);
+  }
+
+  Prediction _mapPrediction(Map<String, dynamic> json) {
     Map<String, dynamic> weather =  json['weather'][0];
     Map<String, dynamic> main = json['main'];
     Map<String, dynamic> wind = json['wind'];
     final timestamp = json['dt'];
     DateTime dateTime = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    return Weather(
-      name: json['name'],
+    return Prediction(
       description: weather['description'],
       icon: weather['icon'],
       temperature: main['temp'] * 1.0,

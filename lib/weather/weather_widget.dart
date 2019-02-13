@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weatherapp/weather/weather.dart';
+import 'package:weatherapp/weather/weather_result.dart';
 import 'package:weatherapp/weather/weather_use_case.dart';
 
 class WeatherPage extends StatefulWidget {
@@ -32,12 +32,12 @@ class _WeatherPageState extends State<WeatherPage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: FutureBuilder<Weather>(
+        child: FutureBuilder<WeatherResult>(
             future: widget.weatherUseCase.get(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                Weather weather = snapshot.data;
-                return _drawWeather(weather);
+                WeatherResult weatherResult = snapshot.data;
+                return _drawWeather(weatherResult);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -48,14 +48,14 @@ class _WeatherPageState extends State<WeatherPage> {
     );
   }
 
-  Container _drawWeather(Weather weather) {
+  Container _drawWeather(WeatherResult weatherResult) {
     Row city = Row(mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Column(children: <Widget>[
                       Text(
-                        weather.name,
+                        weatherResult.weather.name,
                         style: TextStyle(
                           fontSize: 34,
                           color: Colors.black,
@@ -72,7 +72,7 @@ class _WeatherPageState extends State<WeatherPage> {
               children: <Widget>[
                 SizedBox(height: 9),
                 //DATE TEXT
-                Text(weather.dateTime.toIso8601String(),
+                Text(weatherResult.weather.dateTime.toIso8601String(),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.black87,
@@ -90,7 +90,7 @@ class _WeatherPageState extends State<WeatherPage> {
                             SizedBox(height: 68),
                             
                             //TEMPRATURE TEXT
-                            Text(weather.temperature.toString() + "C",
+                            Text(weatherResult.weather.temperature.toString() + "C",
                                 style: TextStyle(
                                   fontSize: 72,
                                   color: Colors.black87,
@@ -104,7 +104,7 @@ class _WeatherPageState extends State<WeatherPage> {
     //https://flutter.io/docs/development/ui/assets-and-images
     final icon = Hero(
       tag: 'hero',
-      child: Image.asset('assets/${weather.icon}.png', scale: 0.9),
+      child: Image.asset('assets/${weatherResult.weather.icon}.png', scale: 0.9),
     );
     Row description = Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -113,7 +113,7 @@ class _WeatherPageState extends State<WeatherPage> {
                         SizedBox(width: 10),
                         icon,
                         SizedBox(width: 9),
-                        Text(weather.description,
+                        Text(weatherResult.weather.description,
                             style: TextStyle(
                               fontSize: 19,
                               color: Colors.black87,
@@ -123,16 +123,16 @@ class _WeatherPageState extends State<WeatherPage> {
     double maxWindSpeed = 25.0; 
     final wind = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weather.windSpeed / maxWindSpeed,
+      value: weatherResult.weather.windSpeed / maxWindSpeed,
     );
     double maxPressure = 1058.0;
     final pressurec = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weather.pressure / maxPressure,
+      value: weatherResult.weather.pressure / maxPressure,
     );
     final humidityc = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weather.humidity / 100.0,
+      value: weatherResult.weather.humidity / 100.0,
     );
     Row other = Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -153,7 +153,7 @@ class _WeatherPageState extends State<WeatherPage> {
                                             color: Colors.black87,
                                           )),
                                       SizedBox(height: 12),
-                                      Text(weather.windSpeed.toString(),
+                                      Text(weatherResult.weather.windSpeed.toString(),
                                           style: TextStyle(
                                             fontSize: 22,
                                             color: Colors.black87,
@@ -183,7 +183,7 @@ class _WeatherPageState extends State<WeatherPage> {
                                             color: Colors.black87,
                                           )),
                                       SizedBox(height: 12),
-                                      Text(weather.pressure.toString(),
+                                      Text(weatherResult.weather.pressure.toString(),
                                           style: TextStyle(
                                             fontSize: 22,
                                             color: Colors.black87,
@@ -213,7 +213,7 @@ class _WeatherPageState extends State<WeatherPage> {
                                             color: Colors.black87,
                                           )),
                                       SizedBox(height: 12),
-                                      Text(weather.humidity.toString(),
+                                      Text(weatherResult.weather.humidity.toString(),
                                           style: TextStyle(
                                             fontSize: 22,
                                             color: Colors.black87,
