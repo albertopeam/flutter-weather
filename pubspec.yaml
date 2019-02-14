@@ -26,6 +26,9 @@ dependencies:
   # Location
   location: ^2.0.0
 
+  # I18n
+  intl: ^0.15.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
