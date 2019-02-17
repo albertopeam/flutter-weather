@@ -23,6 +23,17 @@ class _WeatherPageState extends State<WeatherPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.refresh),
+              tooltip: 'Reload',
+              onPressed: () {
+                setState(() {
+                  //TODO: 
+                });    
+              },
+            )
+        ]
       ),
       body: Center(
         child: FutureBuilder<WeatherResult>(
