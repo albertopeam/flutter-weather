@@ -19,7 +19,7 @@ class WeatherBuilder {
     OpenWeatherForecastService forecastService = OpenWeatherForecastService(client, endpoint, appId);
     WeatherUseCase useCase = WeatherUseCase(location, weatherService, forecastService);
     
-    return CurrentWeatherPage(title: 'Weather', weatherUseCase: useCase);
+    return CurrentWeatherPage(weatherUseCase: useCase);
   }
 
 }

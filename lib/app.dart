@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weatherapp/weather/builder/weather_builder.dart';
+import 'package:weatherapp/weather/weather_builder.dart';
 
 class App extends StatelessWidget {
   

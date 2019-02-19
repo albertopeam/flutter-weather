@@ -4,20 +4,26 @@ import 'package:weatherapp/weather/weather.dart';
 import 'package:weatherapp/common/date_formatter.dart';
 import 'package:weatherapp/weather/widget/prediction_widget.dart';
 
-class ForecastPage extends StatefulWidget {
+class ForecastPage extends StatelessWidget {
   
   final Forecast forecast;
 
   ForecastPage({this.forecast});
 
   @override
-  _ForecastPageState createState() => _ForecastPageState();
+  Widget build(BuildContext context) {
+    List<Widget> items = forecast.predictions.map((prediction) => _prediction(context, prediction)).toList();
+    return Container(
+          margin: EdgeInsets.symmetric(vertical: 25.0),
+          height: 110.0,
+          child: ListView(
+             scrollDirection: Axis.horizontal,
+             children: items,
+           ),
+      );
+  }
 
-}
-
-class _ForecastPageState extends State<ForecastPage> {
-  
-  Widget _prediction(BuildContext context, Weather prediction) {
+    Widget _prediction(BuildContext context, Weather prediction) {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PredictionPage(prediction: prediction)));
@@ -32,17 +38,4 @@ class _ForecastPageState extends State<ForecastPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Forecast forecast = widget.forecast;
-    List<Widget> items = forecast.predictions.map((prediction) => _prediction(context, prediction)).toList();
-    return Container(
-          margin: EdgeInsets.symmetric(vertical: 25.0),
-          height: 110.0,
-          child: ListView(
-             scrollDirection: Axis.horizontal,
-             children: items,
-           ),
-      );  
-  }
 }

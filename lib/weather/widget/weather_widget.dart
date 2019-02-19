@@ -6,7 +6,7 @@ class WeatherPage extends StatelessWidget {
 
   final Weather weather;
 
-  WeatherPage(this.weather);
+  WeatherPage({this.weather});
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +189,7 @@ class WeatherPage extends StatelessWidget {
     );
     Container container = Container(
               margin: EdgeInsets.all(0),
-              child: Padding(padding: const EdgeInsets.all(24.0),
+              child: Padding(padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
                     city,
