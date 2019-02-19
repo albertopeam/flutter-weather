@@ -1,65 +1,22 @@
 import 'package:flutter/material.dart';
-import 'forecast_widget.dart';
+import 'package:weatherapp/weather/weather.dart';
 import 'package:weatherapp/common/date_formatter.dart';
-import 'package:weatherapp/weather/weather_result.dart';
-import 'package:weatherapp/weather/weather_use_case.dart';
 
-class WeatherPage extends StatefulWidget {
+class WeatherPage extends StatelessWidget {
 
-  final String title;
-  final WeatherUseCase weatherUseCase;
+  final Weather weather;
 
-  WeatherPage({Key key, this.title, this.weatherUseCase}) : super(key: key);
+  WeatherPage(this.weather);
 
   @override
-  _WeatherPageState createState() => _WeatherPageState();
-
-}
-
-class _WeatherPageState extends State<WeatherPage> {
-
-  @override
-  Widget build(BuildContext context) {    
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              tooltip: 'Reload',
-              onPressed: () {
-                setState(() {
-                  //TODO: 
-                });    
-              },
-            )
-        ]
-      ),
-      body: Center(
-        child: FutureBuilder<WeatherResult>(
-            future: widget.weatherUseCase.get(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                WeatherResult weatherResult = snapshot.data;
-                return _drawWeather(weatherResult);
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-            },
-          ),
-      )
-    );
-  }
-
-  Container _drawWeather(WeatherResult weatherResult) {
+  Widget build(BuildContext context) {
     Row city = Row(mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Column(children: <Widget>[
                       Text(
-                        weatherResult.weather.name,
+                        weather.name,
                         style: TextStyle(
                           fontSize: 34,
                           color: Colors.black,
@@ -74,7 +31,7 @@ class _WeatherPageState extends State<WeatherPage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Text(DateFormatter.date(weatherResult.weather.dateTime),
+                Text(DateFormatter.date(weather.dateTime),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.black87,
@@ -90,7 +47,7 @@ class _WeatherPageState extends State<WeatherPage> {
                         Column(
                           children: <Widget>[
                             SizedBox(height: 40),                            
-                            Text(weatherResult.weather.temperature.toString() + "°C",
+                            Text(weather.temperature.toString() + "°C",
                                 style: TextStyle(
                                   fontSize: 72,
                                   color: Colors.black87,
@@ -103,9 +60,9 @@ class _WeatherPageState extends State<WeatherPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        Hero(tag: 'hero', child: Image.asset('assets/${weatherResult.weather.icon}.png', scale: 0.7)),
+                        Hero(tag: 'hero', child: Image.asset('assets/${weather.icon}.png', scale: 0.7)),
                         SizedBox(width: 9),
-                        Text(weatherResult.weather.description,
+                        Text(weather.description,
                             style: TextStyle(
                               fontSize: 19,
                               color: Colors.black87,
@@ -115,16 +72,16 @@ class _WeatherPageState extends State<WeatherPage> {
     double maxWindSpeed = 25.0; 
     final wind = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weatherResult.weather.windSpeed / maxWindSpeed,
+      value: weather.windSpeed / maxWindSpeed,
     );
     double maxPressure = 1058.0;
     final pressurec = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weatherResult.weather.pressure / maxPressure,
+      value: weather.pressure / maxPressure,
     );
     final humidityc = LinearProgressIndicator(
       backgroundColor: Colors.white24,
-      value: weatherResult.weather.humidity / 100.0,
+      value: weather.humidity / 100.0,
     );
     Row other = Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -144,7 +101,7 @@ class _WeatherPageState extends State<WeatherPage> {
                             color: Colors.black87,
                           )),
                       SizedBox(height: 12),
-                      Text(weatherResult.weather.windSpeed.toString(),
+                      Text(weather.windSpeed.toString(),
                           style: TextStyle(
                             fontSize: 22,
                             color: Colors.black87,
@@ -174,7 +131,7 @@ class _WeatherPageState extends State<WeatherPage> {
                             color: Colors.black87,
                           )),
                       SizedBox(height: 12),
-                      Text(weatherResult.weather.pressure.toString(),
+                      Text(weather.pressure.toString(),
                           style: TextStyle(
                             fontSize: 22,
                             color: Colors.black87,
@@ -204,7 +161,7 @@ class _WeatherPageState extends State<WeatherPage> {
                             color: Colors.black87,
                           )),
                       SizedBox(height: 12),
-                      Text(weatherResult.weather.humidity.toString(),
+                      Text(weather.humidity.toString(),
                           style: TextStyle(
                             fontSize: 22,
                             color: Colors.black87,
@@ -239,8 +196,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     date ,
                     temperature,
                     description,
-                    other,
-                    ForecastPage(forecast: weatherResult.forecast)
+                    other
                 ],
                ),
               ),
