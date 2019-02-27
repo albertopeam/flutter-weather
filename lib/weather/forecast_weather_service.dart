@@ -16,7 +16,7 @@ class OpenWeatherForecastService implements ForecastService {
   Future<Forecast> get(double lat, double lon) async {
     final url = _endpoint + "forecast?lat=$lat&lon=$lon&appId=$_appId&units=metric";    
     final response = await _client.get(url);
-    if (response.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       return _mapForecast(json.decode(response.body));
     } else {
       throw Exception("Request error");
