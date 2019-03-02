@@ -20,7 +20,7 @@ class WeatherUseCase {
   WeatherUseCase(this._location, this._weatherService, this._forecastService);
 
   Future<WeatherResult> get() async {    
-    LocationData data = await _location.getLocation();
+    LocationData data = await _location.getLocation();    
     Weather weather = await _weatherService.get(data.latitude, data.longitude);
     Forecast forecast = await _forecastService.get(data.latitude, data.longitude);
     return Future.value(WeatherResult(weather: weather, forecast: forecast));
