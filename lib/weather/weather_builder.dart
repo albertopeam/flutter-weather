@@ -6,7 +6,6 @@ import 'package:weatherapp/weather/weather_use_case.dart';
 import 'package:location/location.dart';
 import 'package:weatherapp/common/constants.dart';
 
-
 class WeatherBuilder {
   
   CurrentWeatherPage build() {

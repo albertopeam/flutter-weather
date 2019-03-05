@@ -6,7 +6,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    
     return MaterialApp(
       title: 'Current weather',
       theme: ThemeData(
@@ -15,4 +14,5 @@ class App extends StatelessWidget {
       home: WeatherBuilder().build()
     );
   }
+  
 }
