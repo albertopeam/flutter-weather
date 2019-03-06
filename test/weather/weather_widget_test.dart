@@ -13,7 +13,7 @@ void main() {
   MockWeatherUseCase mockWeatherUseCase;
   Widget sut;
 
-  setUp(() async {
+  setUp(() {
       mockWeatherUseCase = MockWeatherUseCase();
       sut = MediaQuery(
         data: MediaQueryData(), 
@@ -21,7 +21,7 @@ void main() {
       );
   });
 
-  tearDown(() async {
+  tearDown(() {
       mockWeatherUseCase = null;
       sut = null;
   });
